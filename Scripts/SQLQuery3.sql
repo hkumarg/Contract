@@ -1,0 +1,1 @@
+"execute AddEdit_Contract 'HARI', 'CHENNAI',7,'*', '2019-06-23','M', '<=40', '1978-01-01','ADD'";

@@ -1,0 +1,13 @@
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\bin\Debug\netcoreapp2.1\DCurdApi.deps.json
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\bin\Debug\netcoreapp2.1\DCurdApi.runtimeconfig.json
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\bin\Debug\netcoreapp2.1\DCurdApi.runtimeconfig.dev.json
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\bin\Debug\netcoreapp2.1\DCurdApi.dll
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\obj\Debug\netcoreapp2.1\DCurdApi.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\obj\Debug\netcoreapp2.1\DCurdApi.RazorAssemblyInfo.cache
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\obj\Debug\netcoreapp2.1\DCurdApi.RazorAssemblyInfo.cs
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\obj\Debug\netcoreapp2.1\DCurdApi.AssemblyInfoInputs.cache
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\obj\Debug\netcoreapp2.1\DCurdApi.AssemblyInfo.cs
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\obj\Debug\netcoreapp2.1\DCurdApi.RazorTargetAssemblyInfo.cache
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\bin\Debug\netcoreapp2.1\DCurdApi.pdb
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\obj\Debug\netcoreapp2.1\DCurdApi.dll
+C:\Users\Administrator\Documents\work\DCurdApi\DCurdApi\obj\Debug\netcoreapp2.1\DCurdApi.pdb

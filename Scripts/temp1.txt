@@ -1,0 +1,138 @@
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using System.Reflection;
+using System.Text;
+//using Newtonsoft.Json
+using Dapper;
+//using System.Data.Linq;
+
+
+namespace DCurdApi.Model
+{
+    public class ContractRepository
+    {
+        private string connectionString;
+        public ContractRepository()
+        {
+            connectionString = @"Data Source=MSPROJECT;Initial Catalog=licDB;User ID=sa;Password=Maple@123;Pooling=False";
+        }
+
+        public IDbConnection Connection
+        {
+            get
+            {
+                return new SqlConnection(connectionString);
+            }
+        }
+        public void Add(Contract licContract)
+        {
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                string cQuery = @"execute AddEdit_Contract @p_Name,@p_Address,@p_ID,@p_Country,@p_SDate,@p_Gen,@p_Age, @p_dob, @p_flag";
+                sqlCon.Open();
+                //sqlCon.Execute();
+
+                SqlCommand sqlCmd = new SqlCommand(cQuery, sqlCon);
+                sqlCmd.Parameters.AddWithValue("@p_ID", 0);
+                sqlCmd.Parameters.AddWithValue("@p_Name", licContract.CustomerName);
+                sqlCmd.Parameters.AddWithValue("@p_Address", licContract.Address);
+                sqlCmd.Parameters.AddWithValue("@p_Country", licContract.Country);
+                sqlCmd.Parameters.AddWithValue("@p_SDate", licContract.SaleDate);
+                sqlCmd.Parameters.AddWithValue("@p_Gen", licContract.Gender);
+                sqlCmd.Parameters.AddWithValue("@p_dob", licContract.Dateofbirth);
+                sqlCmd.Parameters.AddWithValue("@p_flag", "ADD");
+                sqlCmd.ExecuteNonQuery();
+
+            }
+        }
+
+        public IEnumerable<Contract> GetAll()
+        {
+            using (IDbConnection sConn = Connection)
+            {
+                string cQuery = @"SELECT ContractID ,CustomerName,Address,Gender,Country,Dateofbirth,SaleDate,CoveragePlan,NetPrice  FROM licDB.dbo.Contracts";
+                sConn.Open();
+                return sConn.Query<Contract>(cQuery);
+            }
+        }
+
+        public string GetAll1()
+        {
+            DataTable dtblContract = new DataTable();
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                string cQuery = @"SELECT ContractID ,CustomerName,Address,Gender,Country,Dateofbirth,SaleDate,CoveragePlan,NetPrice  FROM licDB.dbo.Contracts";
+                sqlCon.Open();
+                SqlCommand sqlCmd = new SqlCommand(cQuery, sqlCon);
+                SqlDataAdapter sqlDa = new SqlDataAdapter(cQuery, sqlCon);
+                sqlDa.Fill(dtblContract);
+            }
+            return DataTableToJSONWithStringBuilder(dtblContract);
+        }
+
+        public Contract GetById(int cId)
+        {
+            Contract Contract = new Contract();
+            DataTable dtblContract = new DataTable();
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                string query = "SELECT * FROM licdb.Contract Where ContractID = @ContractID";
+                SqlDataAdapter sqlDa = new SqlDataAdapter(query, sqlCon);
+                sqlDa.SelectCommand.Parameters.AddWithValue("@ContractID", id);
+                sqlDa.Fill(dtblContract);
+            }
+            if (dtblContract.Rows.Count == 1)
+            {
+                Contract.ContractID = Convert.ToInt32(dtblContract.Rows[0][0].ToString());
+                Contract.CustomerName = dtblContract.Rows[0][1].ToString();
+                Contract.Address = dtblContract.Rows[0][2].ToString();
+                Contract.Country = dtblContract.Rows[0][3].ToString();
+                Contract.SaleDate = dtblContract.Rows[0][4].ToString();
+                Contract.Name = dtblContract.Rows[0][5].ToString();
+                Contract.Gen = dtblContract.Rows[0][6].ToString();
+                Contract.dob = dtblContract.Rows[0][7].ToString();
+                return View(Contract);
+            }
+            else
+                return RedirectToAction("Index");
+        }
+
+        public string DataTableToJSONWithStringBuilder(DataTable table)
+        {
+            var JSONString = new StringBuilder();
+            if (table.Rows.Count > 0)
+            {
+                JSONString.Append("[");
+                for (int i = 0; i < table.Rows.Count; i++)
+                {
+                    JSONString.Append("{");
+                    for (int j = 0; j < table.Columns.Count; j++)
+                    {
+                        if (j < table.Columns.Count - 1)
+                        {
+                            JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\",");
+                        }
+                        else if (j == table.Columns.Count - 1)
+                        {
+                            JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\"");
+                        }
+                    }
+                    if (i == table.Rows.Count - 1)
+                    {
+                        JSONString.Append("}");
+                    }
+                    else
+                    {
+                        JSONString.Append("},");
+                    }
+                }
+                JSONString.Append("]");
+            }
+            return JSONString.ToString();
+        }
+    }
+}

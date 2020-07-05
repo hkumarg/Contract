@@ -1,0 +1,68 @@
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using System.Reflection;
+using Newtonsoft.Json
+
+namespace DCurdApi.Model
+{
+    public class ContractRepository
+    {
+        private string connectionString;
+        public ContractRepository()
+        {
+            connectionString = @"Data Source=MSPROJECT;Initial Catalog=licDB;User ID=sa;Password=Maple@123;Pooling=False";
+        }
+
+        public IDbConnection Connection
+        {
+            get
+            {
+        //        return new SqlConnection(connectionString);
+        //    }
+        //}
+        public void Add(Contract licContract)
+        {
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                string cQuery = @"execute AddEdit_Contract @p_Name,@p_Address,@p_ID,@p_Country,@p_SDate,@p_Gen,@p_Age, @p_dob, @p_flag";
+                sqlCon.Open();
+                SqlCommand sqlCmd = new SqlCommand(cQuery, sqlCon);
+                sqlCmd.Parameters.AddWithValue("@p_ID", 0);
+                sqlCmd.Parameters.AddWithValue("@p_Name", licContract.CustomerName);
+                sqlCmd.Parameters.AddWithValue("@p_Address", licContract.Address);
+                sqlCmd.Parameters.AddWithValue("@p_Country", licContract.Country);
+                sqlCmd.Parameters.AddWithValue("@p_SDate", licContract.SaleDate);
+                sqlCmd.Parameters.AddWithValue("@p_Gen", licContract.Gender);
+                sqlCmd.Parameters.AddWithValue("@p_dob", licContract.Dateofbirth);
+                sqlCmd.Parameters.AddWithValue("@p_flag", "ADD");
+                sqlCmd.ExecuteNonQuery();
+            }
+        }
+        /*
+
+        public IEnumerable<Contract> GetAll()
+        {
+            DataTable dtblContract = new DataTable()
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {/*
+                string cQuery = @"SELECT ContractID ,CustomerName,Address,Gender,Country,Dateofbirth,SaleDate,CoveragePlan,NetPrice  FROM licDB.dbo.Contracts";
+                sqlCon.Open();
+                SqlCommand sqlCmd = new SqlCommand(cQuery, sqlCon);
+                */
+        /*               ;
+                      // using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                      // {
+                           sqlCon.Open();
+                           SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM licdb.Contract", sqlCon);
+                           sqlDa.Fill(dtblContract);
+                      // }
+
+                   }
+                   return dtblContract.;
+               }
+       */
+    } }
+}
